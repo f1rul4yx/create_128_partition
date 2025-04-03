@@ -45,6 +45,8 @@ FONDO_GRIS="\e[47m"
 FONDO_BLANCO="\e[48m"
 
 #--------------------FUNCIONES--------------------#
+
+# Funcion para verificar si el usuario es root (Para poder hacer correctamente el script)
 verificar_root(){
   if [[ "$UID" -eq 0 ]]; then
    return 0
@@ -53,4 +55,12 @@ verificar_root(){
   fi
 }
 
-verificar_root
+# Funcion para verificar que dispositivo de bloque hay instalado en el sistema
+establecer_dispositivo(){
+  read -p "Dime el dispositivo de bloque que tienes instalado: " dev
+  if [[ -z $(find /dev/ -name "$dev") ]]; then
+   return 1
+  else
+   return 0
+  fi
+}
