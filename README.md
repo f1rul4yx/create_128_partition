@@ -10,11 +10,7 @@ Este script te permite crear las particiones que usted quiera en un dispositivo 
 
 ### establecer_dispositivo()
 
-- Configura el dispositivo de bloque para usarlo posteriormente.
-
-### verificar_dispositivo()
-
-- Verifica que el dispositivo introducido en `establecer_dispositivo` exista.
+- Pide al usuario el dispositivo de bloque y mira en el sistema si esta disponible
 
 ### verificar_almacenamiento()
 
