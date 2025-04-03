@@ -45,3 +45,12 @@ FONDO_GRIS="\e[47m"
 FONDO_BLANCO="\e[48m"
 
 #--------------------FUNCIONES--------------------#
+verificar_root(){
+  if [[ "$UID" -eq 0 ]]; then
+   return 0
+  else
+   return 1
+  fi
+}
+
+verificar_root
