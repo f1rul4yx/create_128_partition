@@ -47,20 +47,36 @@ FONDO_BLANCO="\e[48m"
 #--------------------FUNCIONES--------------------#
 
 # Funcion para verificar si el usuario es root (Para poder hacer correctamente el script)
-verificar_root(){
+verificar_root() {
   if [[ "$UID" -eq 0 ]]; then
-   return 0
+    return 0
   else
-   return 1
+    return 1
   fi
 }
 
 # Funcion para verificar que dispositivo de bloque hay instalado en el sistema
-establecer_dispositivo(){
+establecer_dispositivo() {
   read -p "Dime el dispositivo de bloque que tienes instalado: " dev
   if [[ -z $(find /dev/ -name "$dev") ]]; then
-   return 1
+    return 1
   else
-   return 0
+    return dev
   fi
+}
+
+# Función que genera 128 particiones
+generar_particiones() {
+  dev = establecer_dispositivo()
+  echo -e "g\nw" | fdisk /dev/$dev &>/dev/null
+  for a in {1..128}; do
+    echo -e "n\n\n\n+2M\nw" | fdisk /dev/$dev &>/dev/null
+  done
+}
+
+# Función que elimina las 128 particiones
+eliminar_particiones() {
+  for a in {1..128}; do
+    echo -e "d\n$a\nw" | fdisk /dev/$dev &>/dev/null
+  done
 }
