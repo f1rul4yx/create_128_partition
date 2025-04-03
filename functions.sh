@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #Author: Sergio Roales, Diego Vargas
-#Fecha de creacion: 03 abr 2025
+#Fecha de creacion: abr 03 2025
 #Version: 1.0
 
 #--------------------VARIABLES--------------------#
@@ -46,37 +46,64 @@ FONDO_BLANCO="\e[48m"
 
 #--------------------FUNCIONES--------------------#
 
-# Funcion para verificar si el usuario es root (Para poder hacer correctamente el script)
+# Función para verificar si el usuario es root (Para poder hacer correctamente el script)
 verificar_root() {
   if [[ "$UID" -eq 0 ]]; then
     return 0
   else
-    return 1
+    echo -e "${ROJO}Debe ejecutar este script bajo los privilegios de usuario root.${RESET}"
+    exit 0
   fi
 }
 
-# Funcion para verificar que dispositivo de bloque hay instalado en el sistema
+# Función para verificar que dispositivo de bloque hay instalado en el sistema y devuelve el resultado
 establecer_dispositivo() {
   read -p "Dime el dispositivo de bloque que tienes instalado: " dev
-  if [[ -z $(find /dev/ -name "$dev") ]]; then
-    return 1
+  if [[ -e /dev/$dev ]]; then    # Verifica que exista el archivo del dispositivo de bloque
+    echo $dev
   else
-    return dev
+    return 1
   fi
 }
 
 # Función que genera 128 particiones
 generar_particiones() {
-  dev = establecer_dispositivo()
-  echo -e "g\nw" | fdisk /dev/$dev &>/dev/null
+  dev=$(establecer_dispositivo)
+  echo -e "g\nw" | fdisk /dev/$dev &>/dev/null    # Establece la tabla de particionado en GPT
   for a in {1..128}; do
-    echo -e "n\n\n\n+2M\nw" | fdisk /dev/$dev &>/dev/null
+    echo -e "n\n\n\n+2M\nw" | fdisk /dev/$dev &>/dev/null    # Crea 128 particiones de 2M cada una
   done
 }
 
 # Función que elimina las 128 particiones
 eliminar_particiones() {
+  dev=$(establecer_dispositivo)
   for a in {1..128}; do
-    echo -e "d\n$a\nw" | fdisk /dev/$dev &>/dev/null
+    echo -e "d\n$a\nw" | fdisk /dev/$dev &>/dev/null    # Elimina todas las particiones del dispositivo en bloque asignado
   done
+}
+
+# Función que genera un menú y ejecuta las funciones
+menu() {
+echo -e "1. Crear 128 particiones (2M cada una)"
+echo -e "2. Eliminar todas las particiones de un disco"
+echo -e "3. Salir"
+read -p "Selecciona una opción: " opcion
+case $opcion in
+  1)
+    $(generar_particiones)
+  ;;
+  2)
+    $(eliminar_particiones)
+  ;;
+  *)
+    exit 0
+  ;;
+esac
+}
+
+# Función que recopila el programa entero
+main() {
+  verificar_root
+  menu
 }

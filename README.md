@@ -19,3 +19,11 @@ Este script te permite crear las particiones que usted quiera en un dispositivo 
 ### eliminar_particiones()
 
 - Elimina las particiones creadas previamente en el dispositivo asignado por el usuario.
+
+### menu()
+
+- Establece un menu y a través de una estructura condicional case, se ejecutan funciones diferentes.
+
+### main()
+
+- Esta es la llamada al programa completo.
