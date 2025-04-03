@@ -12,10 +12,6 @@ Este script te permite crear las particiones que usted quiera en un dispositivo 
 
 - Pide al usuario el dispositivo de bloque y mira en el sistema si esta disponible
 
-### verificar_almacenamiento()
-
-- Verifica que tamaño tiene el dispositivo.
-
 ### generar_particiones()
 
 - Genera 128 particiones teniendo en cuenta el almacenamiento devuelto en `verificar_almacenamiento`.
