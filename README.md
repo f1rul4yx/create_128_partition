@@ -15,3 +15,7 @@ Este script te permite crear las particiones que usted quiera en un dispositivo 
 ### generar_particiones()
 
 - Genera 128 particiones teniendo en cuenta el almacenamiento devuelto en `verificar_almacenamiento`.
+
+### eliminar_particiones()
+
+- Elimina las particiones creadas previamente en el dispositivo asignado por el usuario.
